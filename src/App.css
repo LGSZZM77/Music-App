@@ -7,6 +7,7 @@
 body {
   width: 100%;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 .container {
@@ -50,17 +51,23 @@ body {
 }
 
 .artist-img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  aspect-ratio: 1/1;
   border-radius: 50%;
   cursor: pointer;
+  overflow: hidden;
+  border: 2px solid #9ca3af;
+  box-sizing: content-box;
+}
 
-  /* 추후 제거 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
-  color: white;
+.artist-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artist-img:hover img {
+  filter: grayscale(80%);
 }
 
 .img {
@@ -71,9 +78,21 @@ body {
 
 .artist,
 .track {
-  background-color: red;
   height: 40vh;
   aspect-ratio: 0.8/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.artist h2 {
+  writing-mode: vertical-lr; /* 또는 vertical-lr */
+  text-orientation: upright;
+  font-size: 4rem;
+}
+
+.track {
+  background-color: red;
 }
 
 .control-box {
@@ -112,6 +131,10 @@ body {
   .artist,
   .track {
     height: 25vh;
+  }
+
+  .artist h2 {
+    font-size: 3rem;
   }
 }
 

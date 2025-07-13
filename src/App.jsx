@@ -1,31 +1,50 @@
+import { useEffect, useState } from "react";
+import { gsap } from "gsap";
 import "./App.css";
+import { ARTIST_IMG } from "./assets/img/adress";
 
 function App() {
-  const artistImg = [1, 2, 3];
+  const artistImg = ["요루시카", "요네즈켄시", "요아소비"];
+  const [artist, setArtist] = useState("요루시카");
+  const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+  useEffect(() => {
+    gsap.fromTo(".artist", { x: -300, opacity: 0 }, { x: 0, opacity: 1, duration: 1 });
+    if (mediaQuery.matches) {
+      gsap.fromTo(".track", { opacity: 0 }, { opacity: 1, duration: 1 });
+    } else {
+      gsap.fromTo(".track", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: 1 });
+    }
+  }, []);
+
+  useEffect(() => {
+    gsap.fromTo(".artist", { opacity: 0 }, { opacity: 1, duration: 0.5 });
+    gsap.fromTo(".track", { opacity: 0 }, { opacity: 1, duration: 0.5 });
+  }, [artist]);
 
   return (
     <div id="music">
       <div className="top">
         <div className="container">
           <div className="artist-box">
-            <button>이전</button>
             {artistImg.map((item, index) => (
               <div
                 key={index}
                 className="artist-img"
                 onClick={() => {
-                  alert("클릭");
+                  setArtist(item);
                 }}
               >
-                {item}
+                <img src={ARTIST_IMG[item]} alt={item} />
               </div>
             ))}
-            <button>다음</button>
           </div>
         </div>
       </div>
       <div className="mid">
-        <div className="artist"></div>
+        <div className="artist">
+          <h2>{artist}</h2>
+        </div>
         <div className="img"></div>
         <div className="track"></div>
       </div>
