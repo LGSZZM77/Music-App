@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./App.css";
-import { ARTIST_IMG } from "./assets/img/adress";
+import { ARTIST_IMG } from "./assets/imgAdress";
+import Controls from "./Controls";
 
 function App() {
   const artistImg = ["요루시카", "요네즈켄시", "요아소비"];
@@ -50,21 +51,7 @@ function App() {
       </div>
       <div className="bottom">
         <div className="container">
-          <div className="control-box">
-            <h2 className="title">제목</h2>
-            <div className="time">
-              <div>0:00</div>
-              <div className="progress"></div>
-              <div>4:03</div>
-            </div>
-            <div className="controls">
-              <button>볼륨다운</button>
-              <button>이전</button>
-              <button>재생</button>
-              <button>다음</button>
-              <button>볼륨업</button>
-            </div>
-          </div>
+          <Controls />
         </div>
       </div>
     </div>
