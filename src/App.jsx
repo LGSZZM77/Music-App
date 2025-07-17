@@ -4,6 +4,7 @@ import "./App.css";
 import { ARTIST_IMG } from "./assets/imgAdress";
 import { SONG_TITLE } from "./assets/songTitle";
 import Controls from "./Controls";
+import { ChevronsUp, ChevronsDown } from "lucide-react";
 
 function App() {
   const ARTISTS = [
@@ -67,7 +68,25 @@ function App() {
         <div className="img">
           <img src={`${currentArtist.id}/${songIndex}.jpg`} alt="album" />
         </div>
-        <div className="track"></div>
+        <div className="track">
+          <div className="left">
+            {SONG_TITLE[currentArtist.id].map((item, index) => (
+              <div className="left-line" key={index}>
+                <button onClick={() => setSongIndex(index)}>
+                  {index + 1}. {item}
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="right">
+            <button>
+              <ChevronsUp />
+            </button>
+            <button>
+              <ChevronsDown />
+            </button>
+          </div>
+        </div>
       </div>
       <div className="bottom">
         <div className="container">

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { Play, Pause, StepBack, StepForward, Volume1, Volume2 } from "lucide-react";
 
 function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSongIndex, maxIndex }) {
   const audioRef = useRef(null);
+  const progressBar = useRef(0);
 
   const [volume, setVolume] = useState(0.5);
   const [currentTime, setCurrentTime] = useState(0);
@@ -37,6 +39,15 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
     };
   }, [song]);
 
+  useEffect(() => {
+    const updateProgress = (currentTime / duration) * 100;
+    progressBar.current.style.width = `${updateProgress}%`;
+  }, [currentTime, duration]);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [song]);
+
   function formatTime(sec) {
     const minutes = Math.floor(sec / 60);
     const seconds = Math.floor(sec % 60)
@@ -50,12 +61,19 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
       <h2 className="title">{songTitle}</h2>
       <div className="time">
         <div>{formatTime(currentTime)}</div>
-        <div className="progress"></div>
+        <div className="progress">
+          <div className="progressBar" ref={progressBar}></div>
+        </div>
         <div>{formatTime(duration)}</div>
       </div>
       <div className="controls">
-        <button onClick={volumeDown}>볼륨다운</button>
-        <button onClick={() => setSongIndex(Math.max(songIndex - 1, 0))}>이전</button>
+        <button onClick={volumeDown}>
+          <Volume1 />
+        </button>
+
+        <button onClick={() => setSongIndex(Math.max(songIndex - 1, 0))}>
+          <StepBack />
+        </button>
 
         <audio ref={audioRef} src={song} preload="metadata" />
         <button
@@ -69,11 +87,15 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
             }
           }}
         >
-          {isPlaying ? "일시정지" : "재생"}
+          {isPlaying ? <Pause /> : <Play />}
         </button>
-        <button onClick={() => setSongIndex(Math.min(songIndex + 1, maxIndex))}>다음</button>
+        <button onClick={() => setSongIndex(Math.min(songIndex + 1, maxIndex))}>
+          <StepForward />
+        </button>
 
-        <button onClick={volumeUp}>볼륨업</button>
+        <button onClick={volumeUp}>
+          <Volume2 />
+        </button>
       </div>
     </div>
   );
