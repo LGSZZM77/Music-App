@@ -13,6 +13,18 @@ function App() {
     { id: "yoasobi", name: "요아소비" },
   ];
 
+  const ARTIST_BACKGROUND = {
+    yorushika: "#233876",
+    kenshi: "#014737",
+    yoasobi: "#751A3D",
+  };
+
+  const TRACK_BACKGROUND = {
+    yorushika: "#1C64F2",
+    kenshi: "#057A55",
+    yoasobi: "#D61F69",
+  };
+
   const [artistIndex, setArtistIndex] = useState(0);
   const [songIndex, setSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -39,13 +51,46 @@ function App() {
     gsap.fromTo(".track", { opacity: 0 }, { opacity: 1, duration: 0.5 });
   }, [artistIndex]);
 
+  useEffect(() => {
+    const color = ARTIST_BACKGROUND[currentArtist.id];
+    const color2 = TRACK_BACKGROUND[currentArtist.id];
+
+    document.body.style.background = color;
+
+    document.querySelectorAll(".left-line").forEach((el) => {
+      el.style.background = "";
+    });
+    document.querySelector(".left-line.active").style.background = color2;
+    document.querySelector(".progressBar").style.background = color2;
+  }, [artistIndex, songIndex]);
+
+  useEffect(() => {
+    const audio = new Audio("click/keypress.mp3");
+    audio.preload = "auto";
+
+    const handleButtonClick = (e) => {
+      const button = e.target.closest("button");
+      if (button) {
+        audio.currentTime = 0;
+        audio.play();
+      }
+    };
+
+    // true - 캡처링
+    document.addEventListener("click", handleButtonClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleButtonClick, true);
+    };
+  }, []);
+
   return (
     <div id="music">
       <div className="top">
         <div className="container">
           <div className="artist-box">
             {ARTISTS.map((item, index) => (
-              <div
+              <button
                 key={index}
                 className={`artist-img ${activeIndex === index ? "active" : ""}`}
                 onClick={() => {
@@ -56,7 +101,7 @@ function App() {
                 }}
               >
                 <img src={ARTIST_IMG[item.id]} alt={item.name} />
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -71,8 +116,12 @@ function App() {
         <div className="track">
           <div className="left">
             {SONG_TITLE[currentArtist.id].map((item, index) => (
-              <div className="left-line" key={index}>
-                <button onClick={() => setSongIndex(index)}>
+              <div className={`left-line ${songIndex === index ? "active" : ""}`} key={index}>
+                <button
+                  onClick={() => {
+                    setSongIndex(index);
+                  }}
+                >
                   {index + 1}. {item}
                 </button>
               </div>

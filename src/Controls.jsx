@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, StepBack, StepForward, Volume1, Volume2 } from "lucide-react";
+import { Play, Pause, ChevronsLeft, ChevronsRight, Volume1, Volume2 } from "lucide-react";
 
 function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSongIndex, maxIndex }) {
   const audioRef = useRef(null);
@@ -72,7 +72,7 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
         </button>
 
         <button onClick={() => setSongIndex(Math.max(songIndex - 1, 0))}>
-          <StepBack />
+          <ChevronsLeft />
         </button>
 
         <audio ref={audioRef} src={song} preload="metadata" />
@@ -87,10 +87,10 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
             }
           }}
         >
-          {isPlaying ? <Pause /> : <Play />}
+          {isPlaying ? <Pause style={{ fill: "white" }} /> : <Play style={{ fill: "white" }} />}
         </button>
         <button onClick={() => setSongIndex(Math.min(songIndex + 1, maxIndex))}>
-          <StepForward />
+          <ChevronsRight />
         </button>
 
         <button onClick={volumeUp}>
