@@ -72,16 +72,17 @@ function Controls({ song, songTitle, maxIndex }) {
               audioRef.current.play();
               setIsPlaying(true);
             }}
+            aria-label="Audio progress control"
           />
         </div>
         <div>{formatTime(duration)}</div>
       </div>
       <div className="controls">
-        <button onClick={volumeDown}>
+        <button onClick={volumeDown} aria-label="Volume down">
           <Volume1 />
         </button>
 
-        <button onClick={() => setSongIndex(Math.max(songIndex - 1, 0))}>
+        <button onClick={() => setSongIndex(Math.max(songIndex - 1, 0))} aria-label="Previous track">
           <ChevronsLeft />
         </button>
 
@@ -96,14 +97,15 @@ function Controls({ song, songTitle, maxIndex }) {
               setIsPlaying(true);
             }
           }}
+          aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? <Pause style={{ fill: "white" }} /> : <Play style={{ fill: "white" }} />}
         </button>
-        <button onClick={() => setSongIndex(Math.min(songIndex + 1, maxIndex))}>
+        <button onClick={() => setSongIndex(Math.min(songIndex + 1, maxIndex))} aria-label="Next track">
           <ChevronsRight />
         </button>
 
-        <button onClick={volumeUp}>
+        <button onClick={volumeUp} aria-label="Volume up">
           <Volume2 />
         </button>
       </div>

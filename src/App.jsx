@@ -26,11 +26,19 @@ function App() {
     yoasobi: "#D61F69",
   };
 
+  const SONG_FILE = {
+    yorushika: ["いって", "ただ君に晴れ"],
+    kenshi: ["lemon", "lady"],
+    yoasobi: ["アイドル", "勇者"],
+  };
+
   const { artistIndex, songIndex, isPlaying, activeIndex, setArtistIndex, setSongIndex, setIsPlaying, setActiveIndex } =
     useStore();
 
   const currentArtist = ARTISTS[artistIndex];
-  const song = `${currentArtist.id}/${songIndex}.mp3`;
+  const song = `${currentArtist.id}/${SONG_FILE[currentArtist.id][songIndex]}.mp3`;
+  const thumbnail = `${currentArtist.id}/${SONG_FILE[currentArtist.id][songIndex]}.jpg`;
+
   const songTitle = SONG_TITLE[currentArtist.id][songIndex];
 
   const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -96,6 +104,7 @@ function App() {
                   setArtistIndex(index);
                   setSongIndex(0);
                 }}
+                aria-label={`Select artist ${item.name}`}
               >
                 <img src={ARTIST_IMG[item.id]} alt={item.name} />
               </button>
@@ -108,7 +117,7 @@ function App() {
           <h2>{currentArtist.name}</h2>
         </div>
         <div className="img">
-          <img src={`${currentArtist.id}/${songIndex}.jpg`} alt="album" />
+          <img src={thumbnail} alt="album" />
         </div>
         <div className="track">
           <div className="left">
@@ -118,6 +127,7 @@ function App() {
                   onClick={() => {
                     setSongIndex(index);
                   }}
+                  aria-label={`Play song ${item}`}
                 >
                   {index + 1}. {item}
                 </button>
@@ -125,10 +135,10 @@ function App() {
             ))}
           </div>
           <div className="right">
-            <button>
+            <button aria-label="Scroll up">
               <ChevronsUp />
             </button>
-            <button>
+            <button aria-label="Scroll down">
               <ChevronsDown />
             </button>
           </div>
