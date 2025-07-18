@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, ChevronsLeft, ChevronsRight, Volume1, Volume2 } from "lucide-react";
+import { useStore } from "./store";
 
-function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSongIndex, maxIndex }) {
+function Controls({ song, songTitle, maxIndex }) {
+  const { isPlaying, setIsPlaying, songIndex, setSongIndex } = useStore();
+
   const audioRef = useRef(null);
-  const progressBar = useRef(0);
 
   const [volume, setVolume] = useState(0.5);
   const [currentTime, setCurrentTime] = useState(0);
@@ -40,12 +42,9 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
   }, [song]);
 
   useEffect(() => {
-    const updateProgress = (currentTime / duration) * 100;
-    progressBar.current.style.width = `${updateProgress}%`;
-  }, [currentTime, duration]);
-
-  useEffect(() => {
-    setIsPlaying(false);
+    if (isPlaying) {
+      setIsPlaying(false);
+    }
   }, [song]);
 
   function formatTime(sec) {
@@ -62,7 +61,17 @@ function Controls({ song, isPlaying, setIsPlaying, songTitle, songIndex, setSong
       <div className="time">
         <div>{formatTime(currentTime)}</div>
         <div className="progress">
-          <div className="progressBar" ref={progressBar}></div>
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            value={currentTime}
+            step="0.01"
+            onChange={(e) => {
+              audioRef.current.currentTime = e.target.value;
+              audioRef.current.play();
+            }}
+          />
         </div>
         <div>{formatTime(duration)}</div>
       </div>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { gsap } from "gsap";
 import "./App.css";
 import { ARTIST_IMG } from "./assets/imgAdress";
 import { SONG_TITLE } from "./assets/songTitle";
 import Controls from "./Controls";
 import { ChevronsUp, ChevronsDown } from "lucide-react";
+import { useStore } from "./store";
 
 function App() {
   const ARTISTS = [
@@ -25,15 +26,12 @@ function App() {
     yoasobi: "#D61F69",
   };
 
-  const [artistIndex, setArtistIndex] = useState(0);
-  const [songIndex, setSongIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { artistIndex, songIndex, isPlaying, activeIndex, setArtistIndex, setSongIndex, setIsPlaying, setActiveIndex } =
+    useStore();
 
   const currentArtist = ARTISTS[artistIndex];
   const song = `${currentArtist.id}/${songIndex}.mp3`;
   const songTitle = SONG_TITLE[currentArtist.id][songIndex];
-
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const mediaQuery = window.matchMedia("(max-width: 767px)");
 
@@ -61,7 +59,6 @@ function App() {
       el.style.background = "";
     });
     document.querySelector(".left-line.active").style.background = color2;
-    document.querySelector(".progressBar").style.background = color2;
   }, [artistIndex, songIndex]);
 
   useEffect(() => {
@@ -139,15 +136,7 @@ function App() {
       </div>
       <div className="bottom">
         <div className="container">
-          <Controls
-            song={song}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            songTitle={songTitle}
-            songIndex={songIndex}
-            setSongIndex={setSongIndex}
-            maxIndex={SONG_TITLE[currentArtist.id].length - 1}
-          />
+          <Controls song={song} songTitle={songTitle} maxIndex={SONG_TITLE[currentArtist.id].length - 1} />
         </div>
       </div>
     </div>
