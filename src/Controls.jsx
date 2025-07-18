@@ -70,6 +70,7 @@ function Controls({ song, songTitle, maxIndex }) {
             onChange={(e) => {
               audioRef.current.currentTime = e.target.value;
               audioRef.current.play();
+              setIsPlaying(true);
             }}
           />
         </div>
